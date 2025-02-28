@@ -12,22 +12,22 @@ public class Diet {
 	private String dietTakeData;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "typeTextureId")
-	private DietTextureType dietTypeTexture_Id;
+	private DietTextureType dietTypeTextureId;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "typeDietId")
-	private String diet_Type;
+	private DietType dietType;
 	private String dietAssistance;
 	private String dietProsthesis;
 	private String patientPacNumHistorial;
 
-	public Diet(Integer dietId, String dietDate, String dietTakeData, DietTextureType dietTypeTexture_Id,
-			String diet_Type, String dietAssistance, String dietProsthesis, String patientPacNumHistorial) {
+	public Diet(Integer dietId, String dietDate, String dietTakeData, DietTextureType dietTypeTextureId,
+			DietType dietType, String dietAssistance, String dietProsthesis, String patientPacNumHistorial) {
 		super();
 		this.dietId = dietId;
 		this.dietDate = dietDate;
 		this.dietTakeData = dietTakeData;
-		this.dietTypeTexture_Id = dietTypeTexture_Id;
-		this.diet_Type = diet_Type;
+		this.dietTypeTextureId = dietTypeTextureId;
+		this.dietType = dietType;
 		this.dietAssistance = dietAssistance;
 		this.dietProsthesis = dietProsthesis;
 		this.patientPacNumHistorial = patientPacNumHistorial;
@@ -61,20 +61,20 @@ public class Diet {
 		this.dietTakeData = dietTakeData;
 	}
 
-	public DietTextureType getDietTypeTexture_Id() {
-		return dietTypeTexture_Id;
+	public DietTextureType getDietTypeTextureId() {
+		return dietTypeTextureId;
 	}
 
-	public void setDietTypeTexture_Id(DietTextureType dietTypeTexture_Id) {
-		this.dietTypeTexture_Id = dietTypeTexture_Id;
+	public void setDietTypeTexture_Id(DietTextureType dietTypeTextureId) {
+		this.dietTypeTextureId = dietTypeTextureId;
 	}
 
-	public String getDiet_Type() {
-		return diet_Type;
+	public DietType getDietType() {
+		return dietType;
 	}
 
-	public void setDiet_Type(String diet_Type) {
-		this.diet_Type = diet_Type;
+	public void setDietType(DietType dietType) {
+		this.dietType = dietType;
 	}
 
 	public String getDietAssistance() {
@@ -105,7 +105,7 @@ public class Diet {
 	@Override
 	public String toString() {
 		return "Diet [dietId=" + dietId + ", dietDate=" + dietDate + ", dietTakeData=" + dietTakeData
-				+ ", dietTypeTexture_Id=" + dietTypeTexture_Id + ", diet_Type=" + diet_Type + ", dietAssistance="
+				+ ", dietTypeTextureId=" + dietTypeTextureId + ", dietType=" + dietType + ", dietAssistance="
 				+ dietAssistance + ", dietProsthesis=" + dietProsthesis + ", patientPacNumHistorial="
 				+ patientPacNumHistorial + "]";
 	}
