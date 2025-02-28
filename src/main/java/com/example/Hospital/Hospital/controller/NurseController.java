@@ -1,4 +1,4 @@
-package com.example.Hospital.Hospital;
+package com.example.Hospital.Hospital.controller;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -10,6 +10,10 @@ import java.util.regex.Pattern;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.example.Hospital.Hospital.entity.Nurse;
+import com.example.Hospital.Hospital.repository.NurseRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
