@@ -12,6 +12,15 @@ public class HygieneType {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer typeHygId;
 	private String typeHigDesc;
+	
+	public HygieneType() {
+		super();
+	}
+	public HygieneType(Integer typeHygId, String typeHigDesc) {
+		super();
+		this.typeHygId = typeHygId;
+		this.typeHigDesc = typeHigDesc;
+	}
 	public Integer getTypeHygId() {
 		return typeHygId;
 	}
