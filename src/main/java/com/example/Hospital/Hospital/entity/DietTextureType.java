@@ -7,48 +7,41 @@ import jakarta.persistence.Id;
 
 @Entity
 public class DietTextureType {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer typeTextureId;
-	private String typeTextureDesc;
-	
-	public DietTextureType(Integer typeTextureId, String typeTextureDesc) {
-		super();
-		this.typeTextureId = typeTextureId;
-		this.typeTextureDesc = typeTextureDesc;
-	}
-	
+	private Integer textureTypeId;
+	private String textureTypeDesc;
+
 	public DietTextureType() {
-		
+		super();
 	}
 
-	public Integer getTypeTextureId() {
-		return typeTextureId;
+	public DietTextureType(Integer textureTypeId, String textureTypeDesc) {
+		super();
+		this.textureTypeId = textureTypeId;
+		this.textureTypeDesc = textureTypeDesc;
 	}
 
-	public void setTypeTextureId(Integer typeTextureId) {
-		this.typeTextureId = typeTextureId;
+	public Integer getTextureTypeId() {
+		return textureTypeId;
 	}
 
-	public String getTypeTextureDesc() {
-		return typeTextureDesc;
+	public void setTextureTypeId(Integer textureTypeId) {
+		this.textureTypeId = textureTypeId;
 	}
 
-	public void setTypeTextureDesc(String typeTextureDesc) {
-		this.typeTextureDesc = typeTextureDesc;
+	public String getTextureTypeDesc() {
+		return textureTypeDesc;
+	}
+
+	public void setTextureTypeDesc(String textureTypeDesc) {
+		this.textureTypeDesc = textureTypeDesc;
 	}
 
 	@Override
 	public String toString() {
-		return "DietTextureType [typeTextureId=" + typeTextureId + ", typeTextureDesc=" + typeTextureDesc + "]";
+		return "DietTextureType [textureTypeId=" + textureTypeId + ", textureTypeDesc=" + textureTypeDesc + "]";
 	}
-	
-	
-	
-	
-
-
-	
 
 }

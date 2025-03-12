@@ -1,42 +1,44 @@
 package com.example.Hospital.Hospital.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
 public class Diet {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer dietId;
-	private String dietDate;
+	private Integer dietDate;
 	private String dietTakeData;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "typeTextureId")
-	private DietTextureType dietTypeTextureId;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "typeDietId")
-	private DietType dietType;
-	private String dietAssistance;
-	private String dietProsthesis;
-	private String patientPacNumHistorial;
+	@ManyToMany(mappedBy = "diets")
+	private Set<DietType> dietTypes = new HashSet<>();
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "textureTypeId")
+	private DietTextureType dietTypeTexture;
+	private Integer dietIndependent;
+	private Integer dietProsthesis;
+	
+	
 
-	public Diet(Integer dietId, String dietDate, String dietTakeData, DietTextureType dietTypeTextureId,
-			DietType dietType, String dietAssistance, String dietProsthesis, String patientPacNumHistorial) {
+	public Diet() {
+		super();
+	}
+
+	public Diet(Integer dietId, Integer dietDate, String dietTakeData, Set<DietType> dietTypes,
+			DietTextureType dietTypeTexture, Integer dietIndependent, Integer dietProsthesis) {
 		super();
 		this.dietId = dietId;
 		this.dietDate = dietDate;
 		this.dietTakeData = dietTakeData;
-		this.dietTypeTextureId = dietTypeTextureId;
-		this.dietType = dietType;
-		this.dietAssistance = dietAssistance;
+		this.dietTypes = dietTypes;
+		this.dietTypeTexture = dietTypeTexture;
+		this.dietIndependent = dietIndependent;
 		this.dietProsthesis = dietProsthesis;
-		this.patientPacNumHistorial = patientPacNumHistorial;
 	}
-	
-	public Diet()
-	{
-		
-	}
+
 	public Integer getDietId() {
 		return dietId;
 	}
@@ -45,11 +47,11 @@ public class Diet {
 		this.dietId = dietId;
 	}
 
-	public String getDietDate() {
+	public Integer getDietDate() {
 		return dietDate;
 	}
 
-	public void setDietDate(String dietDate) {
+	public void setDietDate(Integer dietDate) {
 		this.dietDate = dietDate;
 	}
 
@@ -61,59 +63,45 @@ public class Diet {
 		this.dietTakeData = dietTakeData;
 	}
 
-	public DietTextureType getDietTypeTextureId() {
-		return dietTypeTextureId;
+	public Set<DietType> getDietTypes() {
+		return dietTypes;
 	}
 
-	public void setDietTypeTexture_Id(DietTextureType dietTypeTextureId) {
-		this.dietTypeTextureId = dietTypeTextureId;
+	public void setDietTypes(Set<DietType> dietTypes) {
+		this.dietTypes = dietTypes;
 	}
 
-	public DietType getDietType() {
-		return dietType;
+	public DietTextureType getDietTypeTexture() {
+		return dietTypeTexture;
 	}
 
-	public void setDietType(DietType dietType) {
-		this.dietType = dietType;
+	public void setDietTypeTexture(DietTextureType dietTypeTexture) {
+		this.dietTypeTexture = dietTypeTexture;
 	}
 
-	public String getDietAssistance() {
-		return dietAssistance;
+	public Integer getDietIndependent() {
+		return dietIndependent;
 	}
 
-	public void setDietAssistance(String dietAssistance) {
-		this.dietAssistance = dietAssistance;
+	public void setDietIndependent(Integer dietIndependent) {
+		this.dietIndependent = dietIndependent;
 	}
 
-	public String getDietProsthesis() {
+	public Integer getDietProsthesis() {
 		return dietProsthesis;
 	}
 
-	public void setDietProsthesis(String dietProsthesis) {
+	public void setDietProsthesis(Integer dietProsthesis) {
 		this.dietProsthesis = dietProsthesis;
 	}
 
-	public String getPatientPacNumHistorial() {
-		return patientPacNumHistorial;
-	}
-
-	public void setPatientPacNumHistorial(String patientPacNumHistorial) {
-		this.patientPacNumHistorial = patientPacNumHistorial;
-	}
-
-	
 	@Override
 	public String toString() {
-		return "Diet [dietId=" + dietId + ", dietDate=" + dietDate + ", dietTakeData=" + dietTakeData
-				+ ", dietTypeTextureId=" + dietTypeTextureId + ", dietType=" + dietType + ", dietAssistance="
-				+ dietAssistance + ", dietProsthesis=" + dietProsthesis + ", patientPacNumHistorial="
-				+ patientPacNumHistorial + "]";
+		return "Diet [dietId=" + dietId + ", dietDate=" + dietDate + ", dietTakeData=" + dietTakeData + ", dietTypes="
+				+ dietTypes + ", dietTypeTexture=" + dietTypeTexture + ", dietIndependent=" + dietIndependent
+				+ ", dietProsthesis=" + dietProsthesis + "]";
 	}
 	
+	
 
-	
-	
-	
-	
-	
 }
