@@ -7,7 +7,7 @@ import jakarta.persistence.Id;
 
 @Entity
 public class HygieneType {
-	
+	//
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer typeHygId;
