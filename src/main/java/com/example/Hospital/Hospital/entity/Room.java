@@ -1,5 +1,7 @@
 package com.example.Hospital.Hospital.entity;
 
+import java.util.Date;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -8,6 +10,11 @@ public class Room {
 	@Column(nullable = false, length = 7)
 	private String roomId;
 	private String observation;
+	@Column(name = "time_in_room", nullable = true)
+	private Date timeInRoom;
+	@OneToOne
+	@JoinColumn(name = "patient_id", referencedColumnName = "historialNumber")
+	private Patient patient;
 
 	public Room() {
 		super();
@@ -31,6 +38,8 @@ public class Room {
 
 	@Override
 	public String toString() {
-		return "Room [roomId=" + roomId + ", observation=" + observation + "]";
+		return "Room [roomId=" + roomId + ", observation=" + observation + ", timeInRoom=" + timeInRoom + ", patient="
+				+ patient + "]";
 	}
+
 }
