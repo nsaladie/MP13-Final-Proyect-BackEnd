@@ -7,23 +7,23 @@ import org.springframework.http.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.example.Hospital.Hospital.entity.Auxiliar;
-import com.example.Hospital.Hospital.repository.AuxiliarRepository;
+import com.example.Hospital.Hospital.entity.Auxiliary;
+import com.example.Hospital.Hospital.repository.AuxiliaryRepository;
 
 @RestController
-@RequestMapping("/auxiliar")
-public class AuxiliarController {
+@RequestMapping("/auxiliary")
+public class AuxiliaryController {
 	@Autowired
-	private AuxiliarRepository auxiliarRepository;
+	private AuxiliaryRepository auxiliarRepository;
 
-	public AuxiliarController() {
+	public AuxiliaryController() {
 		super();
 	}
 
 	@PostMapping("/login")
-	public @ResponseBody ResponseEntity<Boolean> login(@RequestBody Auxiliar auxiliarId) {
+	public @ResponseBody ResponseEntity<Boolean> login(@RequestBody Auxiliary auxiliarId) {
 		// Search if the auxiliary id is in the database
-		Optional<Auxiliar> auxiliar = auxiliarRepository.findById(auxiliarId.getAuxiliarId());
+		Optional<Auxiliary> auxiliar = auxiliarRepository.findById(auxiliarId.getAuxiliarId());
 
 		// If exist return true
 		if (auxiliar.isPresent()) {
@@ -34,9 +34,9 @@ public class AuxiliarController {
 	}
 
 	@PostMapping("")
-	public @ResponseBody ResponseEntity<Auxiliar> addAuxiliar(@RequestBody Auxiliar auxiliarData) {
+	public @ResponseBody ResponseEntity<Auxiliary> addAuxiliar(@RequestBody Auxiliary auxiliarData) {
 		try {
-			Auxiliar addAuxiliar = new Auxiliar();
+			Auxiliary addAuxiliar = new Auxiliary();
 			addAuxiliar.setName(auxiliarData.getName());
 			addAuxiliar.setSurname(auxiliarData.getSurname());
 
@@ -48,8 +48,8 @@ public class AuxiliarController {
 	}
 
 	@GetMapping("/{id}")
-	public @ResponseBody ResponseEntity<Optional<Auxiliar>> getAuxiliar(@PathVariable int id) {
-		Optional<Auxiliar> auxiliar = auxiliarRepository.findById(id);
+	public @ResponseBody ResponseEntity<Optional<Auxiliary>> getAuxiliar(@PathVariable int id) {
+		Optional<Auxiliary> auxiliar = auxiliarRepository.findById(id);
 
 		// If exist return all the data of the auxiliary
 		if (auxiliar.isPresent()) {

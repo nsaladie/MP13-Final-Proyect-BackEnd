@@ -6,24 +6,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Auxiliar {
+public class Auxiliary {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer auxiliarId;
+	private Integer id;
 
 	private String name;
 	private String surname;
 
-	public Auxiliar() {
+	public Auxiliary() {
 		super();
 	}
 
 	public Integer getAuxiliarId() {
-		return auxiliarId;
+		return id;
 	}
 
 	public void setAuxiliarId(Integer auxiliarId) {
-		this.auxiliarId = auxiliarId;
+		this.id = auxiliarId;
 	}
 
 	public String getName() {
@@ -44,7 +44,7 @@ public class Auxiliar {
 
 	@Override
 	public String toString() {
-		return "Auxiliar [auxiliarId=" + auxiliarId + ", name=" + name + ", surname=" + surname + "]";
+		return "Auxiliar [id=" + id + ", name=" + name + ", surname=" + surname + "]";
 	}
 
 }
