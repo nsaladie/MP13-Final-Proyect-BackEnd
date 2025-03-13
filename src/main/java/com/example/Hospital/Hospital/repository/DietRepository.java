@@ -9,7 +9,6 @@ import com.example.Hospital.Hospital.entity.DietType;
 import com.example.Hospital.Hospital.entity.Nurse;
 import com.example.Hospital.Hospital.entity.DietTextureType;
 
-
 public interface DietRepository extends CrudRepository<Diet, Integer> {
 
 }

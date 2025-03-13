@@ -57,11 +57,10 @@ public class DietType {
 	public void setDiets(Set<Diet> diets) {
 		this.diets = diets;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "DietType [dietTypeId=" + dietTypeId + ", dietTypeDesc=" + dietTypeDesc + ", diets=" + diets + "]";
 	}
-
 
 }
