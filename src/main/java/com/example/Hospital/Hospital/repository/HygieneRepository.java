@@ -4,7 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.example.Hospital.Hospital.entity.HygieneType;
 
-
-public interface HygieneRepository extends CrudRepository<HygieneType, Integer>{
+public interface HygieneRepository extends CrudRepository<HygieneType, Integer> {
 
 }

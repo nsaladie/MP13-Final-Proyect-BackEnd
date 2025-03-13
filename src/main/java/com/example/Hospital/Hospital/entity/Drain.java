@@ -10,7 +10,7 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Drain {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
@@ -18,39 +18,45 @@ public class Drain {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "dranTypeId")
 	private DrainType draintype;
-	
+
 	public Drain() {
 		super();
 	}
+
 	public Drain(Integer id, String drainOutput, DrainType draintype) {
 		super();
 		this.id = id;
 		this.drainOutput = drainOutput;
 		this.draintype = draintype;
 	}
+
 	public Integer getId() {
 		return id;
 	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
 	public String getDrainOutput() {
 		return drainOutput;
 	}
+
 	public void setDrainOutput(String drainOutput) {
 		this.drainOutput = drainOutput;
 	}
+
 	public DrainType getDraintype() {
 		return draintype;
 	}
+
 	public void setDraintype(DrainType draintype) {
 		this.draintype = draintype;
 	}
+
 	@Override
 	public String toString() {
 		return "Drain [id=" + id + ", drainOutput=" + drainOutput + ", draintype=" + draintype + "]";
 	}
-	
-	
 
 }

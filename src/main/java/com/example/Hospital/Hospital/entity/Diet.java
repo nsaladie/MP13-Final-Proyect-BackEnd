@@ -20,8 +20,6 @@ public class Diet {
 	private DietTextureType dietTypeTexture;
 	private Integer dietIndependent;
 	private Integer dietProsthesis;
-	
-	
 
 	public Diet() {
 		super();
@@ -101,7 +99,5 @@ public class Diet {
 				+ dietTypes + ", dietTypeTexture=" + dietTypeTexture + ", dietIndependent=" + dietIndependent
 				+ ", dietProsthesis=" + dietProsthesis + "]";
 	}
-	
-	
 
 }
