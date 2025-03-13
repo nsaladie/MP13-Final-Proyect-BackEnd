@@ -55,12 +55,6 @@ public class PatientController {
 		if (patient.isPresent()) {
 			Patient updateData = patient.get();
 
-			if (update.getCaragiverName() != null) {
-				updateData.setCaragiverName(update.getCaragiverName());
-			}
-			if (update.getCaragiverNumber() != null) {
-				updateData.setCaragiverNumber(update.getCaragiverNumber());
-			}
 			if (update.getAllergy() != null) {
 				updateData.setAllergy(update.getAllergy());
 			}
