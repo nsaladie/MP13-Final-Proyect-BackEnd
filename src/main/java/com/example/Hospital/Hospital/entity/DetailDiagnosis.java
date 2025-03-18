@@ -31,6 +31,7 @@ public class DetailDiagnosis {
 	private String rectalCatheter;
 	@Column(nullable = true)
 	private String nasogastricTube;
+	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "diagnosisId")
 	private Diagnosis diagnosis;

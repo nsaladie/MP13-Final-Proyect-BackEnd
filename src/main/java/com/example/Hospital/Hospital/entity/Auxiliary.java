@@ -18,12 +18,12 @@ public class Auxiliary {
 		super();
 	}
 
-	public Integer getAuxiliarId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setAuxiliarId(Integer auxiliarId) {
-		this.id = auxiliarId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getName() {

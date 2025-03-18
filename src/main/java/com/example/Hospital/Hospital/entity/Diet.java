@@ -1,7 +1,10 @@
 package com.example.Hospital.Hospital.entity;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.*;
 
@@ -11,7 +14,8 @@ public class Diet {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer dietId;
-	private Integer dietDate;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+	private Date dietDate;
 	private String dietTakeData;
 	@ManyToMany(mappedBy = "diets")
 	private Set<DietType> dietTypes = new HashSet<>();
@@ -25,7 +29,7 @@ public class Diet {
 		super();
 	}
 
-	public Diet(Integer dietId, Integer dietDate, String dietTakeData, Set<DietType> dietTypes,
+	public Diet(Integer dietId, Date dietDate, String dietTakeData, Set<DietType> dietTypes,
 			DietTextureType dietTypeTexture, Integer dietIndependent, Integer dietProsthesis) {
 		super();
 		this.dietId = dietId;
@@ -45,11 +49,11 @@ public class Diet {
 		this.dietId = dietId;
 	}
 
-	public Integer getDietDate() {
+	public Date getDietDate() {
 		return dietDate;
 	}
 
-	public void setDietDate(Integer dietDate) {
+	public void setDietDate(Date dietDate) {
 		this.dietDate = dietDate;
 	}
 
@@ -67,6 +71,9 @@ public class Diet {
 
 	public void setDietTypes(Set<DietType> dietTypes) {
 		this.dietTypes = dietTypes;
+		for (DietType dietType : dietTypes) {
+			dietType.getDiets().add(this);
+		}
 	}
 
 	public DietTextureType getDietTypeTexture() {
