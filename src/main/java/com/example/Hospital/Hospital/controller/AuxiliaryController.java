@@ -23,7 +23,7 @@ public class AuxiliaryController {
 	@PostMapping("/login")
 	public @ResponseBody ResponseEntity<Boolean> login(@RequestBody Auxiliary auxiliarId) {
 		// Search if the auxiliary id is in the database
-		Optional<Auxiliary> auxiliar = auxiliarRepository.findById(auxiliarId.getAuxiliarId());
+		Optional<Auxiliary> auxiliar = auxiliarRepository.findById(auxiliarId.getId());
 
 		// If exist return true
 		if (auxiliar.isPresent()) {

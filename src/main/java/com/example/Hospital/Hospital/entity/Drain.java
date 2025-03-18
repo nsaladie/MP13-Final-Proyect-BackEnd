@@ -1,12 +1,9 @@
 package com.example.Hospital.Hospital.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Drain {
@@ -15,19 +12,17 @@ public class Drain {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String drainOutput;
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "dranTypeId")
-	private DrainType draintype;
+	private String drainType;
 
 	public Drain() {
 		super();
 	}
 
-	public Drain(Integer id, String drainOutput, DrainType draintype) {
+	public Drain(Integer id, String drainOutput, String drainType) {
 		super();
 		this.id = id;
 		this.drainOutput = drainOutput;
-		this.draintype = draintype;
+		this.drainType = drainType;
 	}
 
 	public Integer getId() {
@@ -46,17 +41,17 @@ public class Drain {
 		this.drainOutput = drainOutput;
 	}
 
-	public DrainType getDraintype() {
-		return draintype;
+	public String getDrainType() {
+		return drainType;
 	}
 
-	public void setDraintype(DrainType draintype) {
-		this.draintype = draintype;
+	public void setDrainType(String drainType) {
+		this.drainType = drainType;
 	}
 
 	@Override
 	public String toString() {
-		return "Drain [id=" + id + ", drainOutput=" + drainOutput + ", draintype=" + draintype + "]";
+		return "Drain [id=" + id + ", drainOutput=" + drainOutput + ", draintype=" + drainType + "]";
 	}
 
 }
