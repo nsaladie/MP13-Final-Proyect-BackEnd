@@ -1,5 +1,6 @@
 package com.example.Hospital.Hospital.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +17,21 @@ public class PatientController {
 	@Autowired
 	private PatientRepository patientRepository;
 
-	@PostMapping("")
-	public @ResponseBody ResponseEntity<Patient> addAuxiliar(@RequestBody Patient patientData) {
+	@PostMapping("/list")
+	public ResponseEntity<Boolean> addPatients(@RequestBody List<Patient> patients) {
 		try {
-			Patient createPatient = new Patient();
-			createPatient.setName(patientData.getName());
-			createPatient.setSurname(patientData.getSurname());
-			createPatient.setHistory(patientData.getHistory());
-			createPatient.setAllergy(patientData.getAllergy());
-			createPatient.setLanguage(patientData.getLanguage());
-			createPatient.setDateBirth(patientData.getDateBirth());
-			createPatient.setDirection(patientData.getDirection());
-			createPatient.setDateEntry(patientData.getDateEntry());
-			createPatient.setCaragiverName(patientData.getCaragiverName());
-			createPatient.setCaragiverNumber(patientData.getCaragiverNumber());
-			patientRepository.save(createPatient);
-			return ResponseEntity.status(HttpStatus.CREATED).body(createPatient);
+			patientRepository.saveAll(patients);
+			return ResponseEntity.status(HttpStatus.CREATED).body(true);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(false);
+		}
+	}
+
+	@PostMapping()
+	public ResponseEntity<Patient> addSinglePatient(@RequestBody Patient patient) {
+		try {
+			patientRepository.save(patient);
+			return ResponseEntity.status(HttpStatus.CREATED).body(patient);
 		} catch (Exception e) {
 			return ResponseEntity.badRequest().build();
 		}

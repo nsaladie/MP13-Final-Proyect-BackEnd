@@ -9,7 +9,7 @@ public class Room {
 	@Id
 	@Column(nullable = false, length = 7)
 	private String roomId;
-	private String observation;
+	private int roomNumber;
 	@Column(name = "time_in_room", nullable = true)
 	private Date timeInRoom;
 	@OneToOne
@@ -28,17 +28,33 @@ public class Room {
 		this.roomId = roomId;
 	}
 
-	public String getObservation() {
-		return observation;
+	public int getRoomNumber() {
+		return roomNumber;
 	}
 
-	public void setObservation(String observation) {
-		this.observation = observation;
+	public void setRoomNumber(int roomNumber) {
+		this.roomNumber = roomNumber;
+	}
+
+	public Date getTimeInRoom() {
+		return timeInRoom;
+	}
+
+	public void setTimeInRoom(Date timeInRoom) {
+		this.timeInRoom = timeInRoom;
+	}
+
+	public Patient getPatient() {
+		return patient;
+	}
+
+	public void setPatient(Patient patient) {
+		this.patient = patient;
 	}
 
 	@Override
 	public String toString() {
-		return "Room [roomId=" + roomId + ", observation=" + observation + ", timeInRoom=" + timeInRoom + ", patient="
+		return "Room [roomId=" + roomId + ", roomNumber=" + roomNumber + ", timeInRoom=" + timeInRoom + ", patient="
 				+ patient + "]";
 	}
 
