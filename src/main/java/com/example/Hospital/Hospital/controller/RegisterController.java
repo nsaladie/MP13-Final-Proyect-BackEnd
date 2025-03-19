@@ -106,4 +106,17 @@ public class RegisterController {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
 		}
 	}
+
+	@GetMapping("/mobilization/{id}")
+	public @ResponseBody ResponseEntity<Optional<Mobilization>> getMobilizationData(@PathVariable int id) {
+
+		Optional<Mobilization> mobilization = mobilizationRepository.findById(id);
+
+		if (mobilization.isPresent()) {
+			return ResponseEntity.ok(mobilization);
+		}
+		return ResponseEntity.badRequest().build();
+
+	}
+
 }
