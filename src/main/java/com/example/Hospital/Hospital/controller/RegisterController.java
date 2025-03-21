@@ -1,6 +1,8 @@
 package com.example.Hospital.Hospital.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,6 +118,30 @@ public class RegisterController {
 			return ResponseEntity.ok(mobilization);
 		}
 		return ResponseEntity.badRequest().build();
+
+	}
+	
+	@GetMapping("/vitalSign/{id}")
+	public @ResponseBody ResponseEntity<Iterable<VitalSign>> getVitalSignData(@PathVariable int id) {
+
+		
+	    // Obtener los VitalSigns directamente desde el paciente (suponiendo que está relacionado con Register)
+	    List<Register> registers = registerRepository.findByPatientHistorialNumber(id);
+
+	 // Extraer todos los VitalSigns asociados
+	    List<VitalSign> vitalSigns = new ArrayList<>();
+	    for (Register register : registers) {
+	        vitalSigns.add(register.getVitalSign());
+	    }
+
+		if (!vitalSigns.isEmpty()) {
+			return ResponseEntity.ok(vitalSigns);
+		}else {
+		    return ResponseEntity.notFound().build();
+		}
+		
+
+
 
 	}
 
