@@ -3,6 +3,8 @@ package com.example.Hospital.Hospital.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,6 +23,7 @@ public class DietType {
 	private String dietTypeDesc;
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "diet_dietType", joinColumns = @JoinColumn(name = "dietTypeId"), inverseJoinColumns = @JoinColumn(name = "dietId"))
+	@JsonBackReference
 	private Set<Diet> diets = new HashSet<>();
 
 	public DietType() {

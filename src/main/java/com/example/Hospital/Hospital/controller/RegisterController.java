@@ -2,7 +2,9 @@ package com.example.Hospital.Hospital.controller;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,29 +122,52 @@ public class RegisterController {
 		return ResponseEntity.badRequest().build();
 
 	}
-	
+
 	@GetMapping("/vitalSign/{id}")
 	public @ResponseBody ResponseEntity<Iterable<VitalSign>> getVitalSignData(@PathVariable int id) {
 
-		
-	    // Obtener los VitalSigns directamente desde el paciente (suponiendo que está relacionado con Register)
-	    List<Register> registers = registerRepository.findByPatientHistorialNumber(id);
+		List<Register> registers = registerRepository.findByPatientHistorialNumber(id);
 
-	 // Extraer todos los VitalSigns asociados
-	    List<VitalSign> vitalSigns = new ArrayList<>();
-	    for (Register register : registers) {
-	        vitalSigns.add(register.getVitalSign());
-	    }
+		List<VitalSign> vitalSigns = new ArrayList<>();
+		for (Register register : registers) {
+			vitalSigns.add(register.getVitalSign());
+		}
 
 		if (!vitalSigns.isEmpty()) {
 			return ResponseEntity.ok(vitalSigns);
-		}else {
-		    return ResponseEntity.notFound().build();
+		} else {
+			return ResponseEntity.notFound().build();
 		}
-		
 
+	}
 
+	@GetMapping("/{id}")
+	public @ResponseBody ResponseEntity<Map<String, Object>> getCompleteRegisterDataByPatientId(@PathVariable int id) {
 
+		List<Register> registers = registerRepository.findByPatientHistorialNumber(id);
+
+		if (!registers.isEmpty()) {
+			Register register = registers.get(0);
+			Map<String, Object> response = new HashMap<>();
+
+			response.put("id", register.getId());
+			response.put("auxiliaryName", register.getAuxiliary().getName());
+			response.put("patientName", register.getPatient().getName());
+			response.put("date", register.getDate().toString());
+			response.put("hygieneType", register.getHygieneType());
+			response.put("observation", register.getObservation());
+			response.put("diet", register.getDiet());
+			response.put("drain", register.getDrain());
+			response.put("mobilization", register.getMobilization());
+
+			response.put("diagnosis", register.getDiagnosis());
+
+			response.put("vitalSign", register.getVitalSign());
+
+			return ResponseEntity.ok(response);
+		} else {
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 }
