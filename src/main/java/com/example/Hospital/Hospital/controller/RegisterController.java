@@ -1,9 +1,6 @@
 package com.example.Hospital.Hospital.controller;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -145,4 +142,16 @@ public class RegisterController {
 
 	}
 
+	@GetMapping("/diagnosis/{id}")
+	public @ResponseBody ResponseEntity<DetailDiagnosis> getLastDiagnosis(@PathVariable int id) {
+		Optional<Register> register = registerRepository
+				.findTopByPatientHistorialNumberAndDiagnosisIsNotNullOrderByDateDesc(id);
+
+		if (register.isPresent()) {
+			for (DetailDiagnosis diagnosis : register.get().getDiagnosis().getDetailDiagnosisSet()) {
+				return ResponseEntity.ok(diagnosis);
+			}
+		}
+		return ResponseEntity.badRequest().build();
+	}
 }
