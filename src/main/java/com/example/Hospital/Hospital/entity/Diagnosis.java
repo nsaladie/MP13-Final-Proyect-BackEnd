@@ -3,6 +3,8 @@ package com.example.Hospital.Hospital.entity;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +15,7 @@ public class Diagnosis {
 
 	private String diagnosisDescription;
 	@OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
+	@JsonManagedReference
 	private Set<DetailDiagnosis> detailDiagnosisSet = new HashSet<>();
 
 	public Diagnosis() {
