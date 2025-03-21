@@ -1,116 +1,134 @@
-# Hospital Management System - Nurse Controller
-This project is a **Java Spring Boot** application designed to manage a hospital's nursing staff. It leverages Hibernate for database interaction and includes a RESTful API to perform CRUD operations on Nurse entities.
+# Hospital Management System Backend
+
+## Project Overview
+
+This is a comprehensive hospital management system backend developed with Spring Boot. The application is designed to manage patient records, medical staff, diagnostics, and various hospital facilities in a unified system.
 
 ## Features
 
-- Nurse login authentication.
-- Retrieve all nurses.
-- Search nurse by name or ID.
-- Add, update, and delete nurses.
-- Data validation for password.
+- **Nurse Management**: CRUD operations for nurses, including authentication and specialization tracking
+- **Patient Management**: Store and retrieve patient information including personal details, medical history, and emergency contacts
+- **Staff Management**: Track auxiliary staff with authentication
+- **Medical Record Management**: Maintain detailed patient diagnoses, vital signs, and observations
+- **Facility Management**: Room allocation and tracking
+- **Diet Tracking**: Record and monitor patient diets, dietary requirements, and texture types
+- **Mobilization Management**: Track patient mobility, including sedestation and walking assistance
+- **Drainage System**: Monitor patient drain outputs and types
+- **Hygiene Management**: Record hygiene types and procedures
+
+## Technology Stack
+
+- **Java**: Core programming language
+- **Spring Boot**: Application framework
+- **Spring Data JPA**: Data persistence
+- **Jakarta Persistence**: ORM mapping
+- **RESTful API**: Service architecture
+
+  ## Entity Relationship
+
+The system is built around the following key entities:
+
+- **Patient**: Core entity with personal information and medical history
+- **Register**: Central record linking patients with various medical data
+- **Nurse**: Nursing staff entity
+- **Auxiliary**: Medical staff entity
+- **Diagnosis**: Patient diagnoses with detailed descriptions
+- **DetailDiagnosis**: Specific diagnosis details including dependency levels and equipment
+- **VitalSign**: Patient vital statistics tracking
+- **Diet**: Nutrition tracking with various types and textures
+- **Room**: Facility management
+- **Observation**: Additional patient notes
+- **Mobilization**: Patient mobility tracking
+- **Drain**: Drainage system monitoring
 
 ## API Endpoints
 
-### Base URL: `/nurse`
+### Nurse Management
+- `POST /nurse/login`: Nurse authentication
+- `GET /nurse/`: Retrieve all nurses
+- `GET /nurse/name/{name}`: Find nurse by name
+- `GET /nurse/name/{id}`: Find nurse by ID
+- `POST /nurse/`: Create a new nurse
+- `PUT /nurse/{id}`: Update nurse details
+- `DELETE /nurse/{id}`: Delete a nurse
 
-1. **Login Nurse**  
-   `POST /login`  
-   - **Params**: `name`, `password`  
-   - **Responses**:  
-     - `200 OK`: Valid credentials.  
-     - `401 Unauthorized`: Invalid credentials.
+### Auxiliary Management
+- `POST /auxiliary/login`: Staff authentication
+- `POST /auxiliary`: Create new auxiliary staff
+- `GET /auxiliary/{id}`: Retrieve staff information
 
-2. **Get All Nurses**  
-   `GET /`  
-   - **Response**: List of all nurses (`200 OK`).
+### Patient Management
+- `POST /patient/list`: Batch add patients
+- `POST /patient`: Add a single patient
+- `GET /patient/{id}`: Retrieve patient data
+- `PUT /patient/{id}`: Update patient information
 
-3. **Find Nurse by Name**  
-   `GET /name/{name}`  
-   - **Response**:  
-     - `200 OK`: Nurse found.  
-     - `404 Not Found`: No nurse with the given name.
+### Register Management
+- `POST /register`: Create a new medical register
+- `GET /register/{id}`: Get complete register data by patient ID
+- `GET /register/mobilization/{id}`: Get mobilization data
+- `GET /register/vitalSign/{id}`: Get vital sign history
+- `GET /register/diagnosis/{id}`: Get the latest diagnosis
 
-4. **Find Nurse by ID**  
-   `GET /{id}`  
-   - **Response**:  
-     - `200 OK`: Nurse found.  
-     - `404 Not Found`: No nurse with the given ID.
+### Room Management
+- `POST /room`: Create a new room
+- `POST /room/list`: Create multiple rooms
+- `GET /room`: Get all rooms
 
-5. **Create New Nurse**  
-   `POST /`  
-   - **Params**: `name`, `password`, `age`, `speciality`  
-   - **Response**:  
-     - `201 Created`: Nurse added.  
-     - `400 Bad Request`: Invalid input.
+## Database Schema
 
-6. **Update Nurse**  
-   `PUT /{id}`  
-   - **Body**: `Nurse` (JSON)  
-   - **Response**:  
-     - `200 OK`: Nurse updated.  
-     - `400 Bad Request`: Invalid input.  
-     - `404 Not Found`: Nurse not found.
+The system uses a relational database with relationships between:
+- One-to-many: Diagnosis-DetailDiagnosis, Patient-Observation
+- Many-to-many: Diet-DietType
+- One-to-one: Register-VitalSign, Register-Diet, Patient-Room
 
-7. **Delete Nurse**  
-   `DELETE /{id}`  
-   - **Response**:  
-     - `200 OK`: Nurse deleted.  
-     - `404 Not Found`: Nurse not found.
+## Setup and Installation
 
-## Data Model
+1. Clone the repository
+   ```
+   git clone https://github.com/nsaladie/MP13-Final-Proyect-BackEnd.git
+   ```
 
-### Nurse
-```java
-@Entity
-public class Nurse {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+2. Build with Maven
+   ```
+   mvn clean install
+   ```
 
-	private String name;
-	private String surname;
-	private String age;
-	private String email;
-	private String password;
-	private String speciality;
-}
+3. Configure your database in `application.properties`
+
+4. Run the application
+   ```
+   mvn spring-boot:run
+   ```
+
+## Development
+
+### Prerequisites
+- JDK 17+
+- Maven
+- MySQL database
+
+### Project Structure
+```
+src/main/java/com/example/Hospital/Hospital/
+├── controller/    # REST controllers
+├── entity/        # JPA entities
+├── repository/    # Spring Data repositories
 ```
 
-## Validation Rules
+## Contributing
 
-- **Password**: Must contain at least 6 characters, including 1 uppercase letter, 1 lowercase letter, and 1 number.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-## Testing
+## License
 
-- **JUnit** and **Mockito** are used for unit testing.
-- Includes tests for all CRUD operations and login functionality.
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-Run tests locally using:
-```bash
-./mvnw test
-```
+## Acknowledgments
 
-### Automated Tests on Pull Requests
-The project is configured with GitHub Actions to automatically run tests whenever a pull request is made to the main branch.
-
-1. Create a pull request to ```master```.
-2. GitHub Actions will automatically trigger the test workflow.
-3. Review the test results directly in the pull request.
-
-## Setup
-
-1. Clone the project:
-   ```bash
-   git clone https://github.com/nsaladie/MP13-Hospital-BackEnd.git
-   ```
-2. Configure `application.properties`:
-
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
-   spring.datasource.username=your_username
-   spring.datasource.password=your_password
-   ```
-4. Run the application:
-   ```bash
-   ./mvnw spring-boot:run
-   ```
+- Hospital management systems best practices
+- Spring Boot community
