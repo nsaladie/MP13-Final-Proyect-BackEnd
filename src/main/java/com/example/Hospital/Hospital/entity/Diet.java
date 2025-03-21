@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
@@ -18,6 +19,7 @@ public class Diet {
 	private Date dietDate;
 	private String dietTakeData;
 	@ManyToMany(mappedBy = "diets")
+	@JsonManagedReference
 	private Set<DietType> dietTypes = new HashSet<>();
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "textureTypeId")
