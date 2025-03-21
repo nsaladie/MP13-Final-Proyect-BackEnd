@@ -117,6 +117,30 @@ public class RegisterController {
 		return ResponseEntity.badRequest().build();
 
 	}
+	
+	@GetMapping("/vitalSign/{id}")
+	public @ResponseBody ResponseEntity<Iterable<VitalSign>> getVitalSignData(@PathVariable int id) {
+
+		
+	    // Obtener los VitalSigns directamente desde el paciente (suponiendo que está relacionado con Register)
+	    List<Register> registers = registerRepository.findByPatientHistorialNumber(id);
+
+	 // Extraer todos los VitalSigns asociados
+	    List<VitalSign> vitalSigns = new ArrayList<>();
+	    for (Register register : registers) {
+	        vitalSigns.add(register.getVitalSign());
+	    }
+
+		if (!vitalSigns.isEmpty()) {
+			return ResponseEntity.ok(vitalSigns);
+		}else {
+		    return ResponseEntity.notFound().build();
+		}
+		
+
+
+
+	}
 
 	@GetMapping("/diagnosis/{id}")
 	public @ResponseBody ResponseEntity<DetailDiagnosis> getLastDiagnosis(@PathVariable int id) {
