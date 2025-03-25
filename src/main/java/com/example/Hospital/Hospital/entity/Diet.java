@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
 
@@ -14,12 +13,11 @@ public class Diet {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer dietId;
+	private Integer id;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
 	private Date dietDate;
 	private String dietTakeData;
 	@ManyToMany(mappedBy = "diets")
-	@JsonManagedReference
 	private Set<DietType> dietTypes = new HashSet<>();
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "textureTypeId")
@@ -31,10 +29,10 @@ public class Diet {
 		super();
 	}
 
-	public Diet(Integer dietId, Date dietDate, String dietTakeData, Set<DietType> dietTypes,
+	public Diet(Integer id, Date dietDate, String dietTakeData, Set<DietType> dietTypes,
 			DietTextureType dietTypeTexture, Integer dietIndependent, Integer dietProsthesis) {
 		super();
-		this.dietId = dietId;
+		this.id = id;
 		this.dietDate = dietDate;
 		this.dietTakeData = dietTakeData;
 		this.dietTypes = dietTypes;
@@ -43,12 +41,13 @@ public class Diet {
 		this.dietProsthesis = dietProsthesis;
 	}
 
-	public Integer getDietId() {
-		return dietId;
+
+	public Integer getId() {
+		return id;
 	}
 
-	public void setDietId(Integer dietId) {
-		this.dietId = dietId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public Date getDietDate() {
@@ -104,7 +103,7 @@ public class Diet {
 
 	@Override
 	public String toString() {
-		return "Diet [dietId=" + dietId + ", dietDate=" + dietDate + ", dietTakeData=" + dietTakeData + ", dietTypes="
+		return "Diet [id=" + id + ", dietDate=" + dietDate + ", dietTakeData=" + dietTakeData + ", dietTypes="
 				+ dietTypes + ", dietTypeTexture=" + dietTypeTexture + ", dietIndependent=" + dietIndependent
 				+ ", dietProsthesis=" + dietProsthesis + "]";
 	}
