@@ -1,8 +1,6 @@
 package com.example.Hospital.Hospital.controller;
 
-
 import java.util.*;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -77,7 +75,7 @@ public class RegisterController {
 
 				if (diet.getDietTypes() != null && !diet.getDietTypes().isEmpty()) {
 					for (DietType dietType : diet.getDietTypes()) {
-						if (dietType.getDietTypeId() == null)
+						if (dietType.getId() == null)
 							dietTypeRepository.save(dietType);
 					}
 				}

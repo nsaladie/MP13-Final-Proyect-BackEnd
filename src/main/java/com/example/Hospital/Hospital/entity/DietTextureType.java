@@ -10,25 +10,25 @@ public class DietTextureType {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer textureTypeId;
+	private Integer id;
 	private String textureTypeDesc;
 
 	public DietTextureType() {
 		super();
 	}
 
-	public DietTextureType(Integer textureTypeId, String textureTypeDesc) {
+	public DietTextureType(Integer id, String textureTypeDesc) {
 		super();
-		this.textureTypeId = textureTypeId;
+		this.id = id;
 		this.textureTypeDesc = textureTypeDesc;
 	}
 
-	public Integer getTextureTypeId() {
-		return textureTypeId;
+	public Integer getId() {
+		return id;
 	}
 
-	public void setTextureTypeId(Integer textureTypeId) {
-		this.textureTypeId = textureTypeId;
+	public void setId(Integer id) {
+		this.id = id;
 	}
 
 	public String getTextureTypeDesc() {
@@ -41,7 +41,7 @@ public class DietTextureType {
 
 	@Override
 	public String toString() {
-		return "DietTextureType [textureTypeId=" + textureTypeId + ", textureTypeDesc=" + textureTypeDesc + "]";
+		return "DietTextureType [id=" + id+ ", textureTypeDesc=" + textureTypeDesc + "]";
 	}
 
 }
