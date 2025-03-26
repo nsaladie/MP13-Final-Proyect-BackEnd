@@ -146,17 +146,14 @@ public class RegisterController {
 			Map<String, Object> response = new HashMap<>();
 
 			response.put("id", register.getId());
-			response.put("auxiliaryName", register.getAuxiliary().getName());
-			response.put("patientName", register.getPatient().getName());
+			response.put("auxiliary", register.getAuxiliary());
+			response.put("patient", register.getPatient());
 			response.put("date", register.getDate().toString());
 			response.put("hygieneType", register.getHygieneType());
 			response.put("observation", register.getObservation());
 			response.put("diet", register.getDiet());
 			response.put("drain", register.getDrain());
 			response.put("mobilization", register.getMobilization());
-
-			response.put("diagnosis", register.getDiagnosis());
-
 			response.put("vitalSign", register.getVitalSign());
 
 			return ResponseEntity.ok(response);
