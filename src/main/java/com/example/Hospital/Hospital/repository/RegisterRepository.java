@@ -8,8 +8,11 @@ import org.springframework.data.repository.CrudRepository;
 import com.example.Hospital.Hospital.entity.Register;
 
 public interface RegisterRepository extends CrudRepository<Register, Integer> {
-  
-	List<Register> findByPatientHistorialNumber(int patientId);
+
+	List<Register> findByPatientHistorialNumberOrderByDateDesc(int patientId);
+
 	Optional<Register> findTopByPatientHistorialNumberAndDiagnosisIsNotNullOrderByDateDesc(int historialNumber);
+
+	List<Register> findByPatientHistorialNumber(int patientId);
 
 }
