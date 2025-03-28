@@ -46,6 +46,7 @@ public class RegisterController {
 	@Transactional
 	public @ResponseBody ResponseEntity<Boolean> createRegister(@RequestBody Register register) {
 		try {
+			
 			// Add the current Date of the insert data
 			register.setDate(new Date());
 
@@ -54,21 +55,25 @@ public class RegisterController {
 				Mobilization mobilization = mobilizationRepository.save(register.getMobilization());
 				register.setMobilization(mobilization);
 			}
+			
 			// Hygiene Type
 			if (register.getHygieneType() != null) {
 				HygieneType hygieneType = hygieneRepository.save(register.getHygieneType());
 				register.setHygieneType(hygieneType);
 			}
+			
 			// Vital Sign
 			if (register.getVitalSign() != null) {
 				VitalSign vitalSign = vitalSignRepository.save(register.getVitalSign());
 				register.setVitalSign(vitalSign);
 			}
+			
 			// Drain
 			if (register.getDrain() != null) {
 				Drain drain = drainRepository.save(register.getDrain());
 				register.setDrain(drain);
 			}
+			
 			// Diet
 			if (register.getDiet() != null) {
 				Diet diet = dietRepository.save(register.getDiet());
@@ -81,6 +86,7 @@ public class RegisterController {
 				}
 				register.setDiet(diet);
 			}
+			
 			// Diagnosis
 			if (register.getDiagnosis() != null) {
 				Diagnosis diagnosis = diagnosisRepository.save(register.getDiagnosis());
@@ -98,7 +104,7 @@ public class RegisterController {
 			register.setAuxiliary(auxiliary.get());
 			Optional<Patient> patient = patientRepository.findById(register.getPatient().getHistorialNumber());
 			register.setPatient(patient.get());
-
+			
 			registerRepository.save(register);
 			return ResponseEntity.ok(true);
 		} catch (Exception e) {
@@ -121,7 +127,7 @@ public class RegisterController {
 	@GetMapping("/vitalSign/{id}")
 	public @ResponseBody ResponseEntity<Iterable<VitalSign>> getVitalSignData(@PathVariable int id) {
 
-		List<Register> registers = registerRepository.findByPatientHistorialNumber(id);
+		List<Register> registers = registerRepository.findByPatientHistorialNumberOrderByDateDesc(id);
 
 		List<VitalSign> vitalSigns = new ArrayList<>();
 		for (Register register : registers) {
@@ -137,12 +143,12 @@ public class RegisterController {
 	}
 
 	@GetMapping("/{id}")
-	public @ResponseBody ResponseEntity<Map<String, Object>> getCompleteRegisterDataByPatientId(@PathVariable int id) {
+	public @ResponseBody ResponseEntity<Map<String, Object>> getCompleteRegisterDataByRegisterId(@PathVariable int id) {
 
-		List<Register> registers = registerRepository.findByPatientHistorialNumber(id);
+		Optional<Register> registers = registerRepository.findById(id);
 
 		if (!registers.isEmpty()) {
-			Register register = registers.get(0);
+			Register register = registers.get();
 			Map<String, Object> response = new HashMap<>();
 
 			response.put("id", register.getId());
