@@ -11,16 +11,16 @@ public class DietTextureType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String textureTypeDesc;
+	private String description;
 
 	public DietTextureType() {
 		super();
 	}
 
-	public DietTextureType(Integer id, String textureTypeDesc) {
+	public DietTextureType(Integer id, String description) {
 		super();
 		this.id = id;
-		this.textureTypeDesc = textureTypeDesc;
+		this.description = description;
 	}
 
 	public Integer getId() {
@@ -31,17 +31,17 @@ public class DietTextureType {
 		this.id = id;
 	}
 
-	public String getTextureTypeDesc() {
-		return textureTypeDesc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setTextureTypeDesc(String textureTypeDesc) {
-		this.textureTypeDesc = textureTypeDesc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override
 	public String toString() {
-		return "DietTextureType [id=" + id+ ", textureTypeDesc=" + textureTypeDesc + "]";
+		return "DietTextureType [id=" + id + ", description=" + description + "]";
 	}
 
 }

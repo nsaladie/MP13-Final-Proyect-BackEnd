@@ -20,7 +20,7 @@ public class DietType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String dietTypeDesc;
+	private String description;
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "diet_dietType", joinColumns = @JoinColumn(name = "dietTypeId"), inverseJoinColumns = @JoinColumn(name = "dietId"))
 	@JsonBackReference
@@ -30,13 +30,12 @@ public class DietType {
 		super();
 	}
 
-	public DietType(Integer id, String dietTypeDesc, Set<Diet> diets) {
+	public DietType(Integer id, String description, Set<Diet> diets) {
 		super();
 		this.id = id;
-		this.dietTypeDesc = dietTypeDesc;
+		this.description = description;
 		this.diets = diets;
 	}
-
 
 	public Integer getId() {
 		return id;
@@ -46,12 +45,12 @@ public class DietType {
 		this.id = id;
 	}
 
-	public String getDietTypeDesc() {
-		return dietTypeDesc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDietTypeDesc(String dietTypeDesc) {
-		this.dietTypeDesc = dietTypeDesc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Set<Diet> getDiets() {
@@ -64,7 +63,7 @@ public class DietType {
 
 	@Override
 	public String toString() {
-		return "DietType [id=" + id + ", dietTypeDesc=" + dietTypeDesc + ", diets=" + diets + "]";
+		return "DietType [id=" + id + ", description=" + description + ", diets=" + diets + "]";
 	}
 
 }

@@ -13,7 +13,7 @@ public class Diagnosis {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String diagnosisDescription;
+	private String description;
 	@OneToMany(mappedBy = "diagnosis", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonManagedReference
 	private Set<DetailDiagnosis> detailDiagnosisSet = new HashSet<>();
@@ -38,12 +38,12 @@ public class Diagnosis {
 		this.detailDiagnosisSet = detailDiagnosisSet;
 	}
 
-	public String getDiagnosisDescription() {
-		return diagnosisDescription;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setDiagnosisDescription(String diagnosisDescription) {
-		this.diagnosisDescription = diagnosisDescription;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

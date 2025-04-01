@@ -11,16 +11,16 @@ public class HygieneType {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String typeHigDesc;
+	private String description;
 
 	public HygieneType() {
 		super();
 	}
 
-	public HygieneType(Integer id, String typeHigDesc) {
+	public HygieneType(Integer id, String description) {
 		super();
 		this.id = id;
-		this.typeHigDesc = typeHigDesc;
+		this.description = description;
 	}
 
 	public Integer getId() {
@@ -31,17 +31,21 @@ public class HygieneType {
 		this.id = id;
 	}
 
-	public String getTypeHigDesc() {
-		return typeHigDesc;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setTypeHigDesc(String typeHigDesc) {
-		this.typeHigDesc = typeHigDesc;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override
 	public String toString() {
-		return "HygieneType [id=" + id + ", typeHigDesc=" + typeHigDesc + "]";
+		return "HygieneType [id=" + id + ", description=" + description + "]";
 	}
+
+
+
+
 
 }
