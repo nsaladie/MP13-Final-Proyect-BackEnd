@@ -112,20 +112,8 @@ public class RegisterController {
 		}
 	}
 
-	@GetMapping("/mobilization/{id}")
-	public @ResponseBody ResponseEntity<Optional<Mobilization>> getMobilizationData(@PathVariable int id) {
-
-		Optional<Mobilization> mobilization = mobilizationRepository.findById(id);
-
-		if (mobilization.isPresent()) {
-			return ResponseEntity.ok(mobilization);
-		}
-		return ResponseEntity.badRequest().build();
-
-	}
-
-	@GetMapping("/vitalSign/{id}")
-	public @ResponseBody ResponseEntity<Iterable<VitalSign>> getVitalSignData(@PathVariable int id) {
+    @GetMapping("/vitalSign/{id}")
+    public @ResponseBody ResponseEntity<Iterable<VitalSign>> getVitalSignData(@PathVariable int id) {
 
 		List<Register> registers = registerRepository.findByPatientHistorialNumberOrderByDateDesc(id);
 
@@ -145,7 +133,7 @@ public class RegisterController {
 	@GetMapping("/{id}")
 	public @ResponseBody ResponseEntity<Map<String, Object>> getCompleteRegisterDataByRegisterId(@PathVariable int id) {
 
-		Optional<Register> registers = registerRepository.findById(id);
+        Optional<Register> registers = registerRepository.findByVitalSignId(id);
 
 		if (!registers.isEmpty()) {
 			Register register = registers.get();
