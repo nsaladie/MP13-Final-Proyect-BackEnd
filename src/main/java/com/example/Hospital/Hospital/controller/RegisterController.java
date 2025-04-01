@@ -131,7 +131,7 @@ public class RegisterController {
 	}
 
 	@GetMapping("/{id}")
-	public @ResponseBody ResponseEntity<Map<String, Object>> getCompleteRegisterDataByRegisterId(@PathVariable int id) {
+	public @ResponseBody ResponseEntity<Map<String, Object>> getCompleteRegisterDataByVitalSignId(@PathVariable int id) {
 
         Optional<Register> registers = registerRepository.findByVitalSignId(id);
 

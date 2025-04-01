@@ -15,8 +15,8 @@ public class Diet {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	private Date dietDate;
-	private String dietTakeData;
+	private Date date;
+	private String takeData;
 	@ManyToMany(mappedBy = "diets")
 	private Set<DietType> dietTypes = new HashSet<>();
 	@ManyToOne(cascade = CascadeType.ALL)
@@ -29,12 +29,12 @@ public class Diet {
 		super();
 	}
 
-	public Diet(Integer id, Date dietDate, String dietTakeData, Set<DietType> dietTypes,
-			DietTextureType dietTypeTexture, Integer independent, Integer prosthesis) {
+	public Diet(Integer id, Date date, String takeData, Set<DietType> dietTypes, DietTextureType dietTypeTexture,
+			Integer independent, Integer prosthesis) {
 		super();
 		this.id = id;
-		this.dietDate = dietDate;
-		this.dietTakeData = dietTakeData;
+		this.date = date;
+		this.takeData = takeData;
 		this.dietTypes = dietTypes;
 		this.dietTypeTexture = dietTypeTexture;
 		this.independent = independent;
@@ -49,20 +49,20 @@ public class Diet {
 		this.id = id;
 	}
 
-	public Date getDietDate() {
-		return dietDate;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setDietDate(Date dietDate) {
-		this.dietDate = dietDate;
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
-	public String getDietTakeData() {
-		return dietTakeData;
+	public String getTakeData() {
+		return takeData;
 	}
 
-	public void setDietTakeData(String dietTakeData) {
-		this.dietTakeData = dietTakeData;
+	public void setTakeData(String takeData) {
+		this.takeData = takeData;
 	}
 
 	public Set<DietType> getDietTypes() {
@@ -102,9 +102,11 @@ public class Diet {
 
 	@Override
 	public String toString() {
-		return "Diet [id=" + id + ", dietDate=" + dietDate + ", dietTakeData=" + dietTakeData + ", dietTypes="
-				+ dietTypes + ", dietTypeTexture=" + dietTypeTexture + ", independent=" + independent + ", prosthesis="
-				+ prosthesis + "]";
+		return "Diet [id=" + id + ", date=" + date + ", takeData=" + takeData + ", dietTypes=" + dietTypes
+				+ ", dietTypeTexture=" + dietTypeTexture + ", independent=" + independent + ", prosthesis=" + prosthesis
+				+ "]";
 	}
+
+	
 
 }
