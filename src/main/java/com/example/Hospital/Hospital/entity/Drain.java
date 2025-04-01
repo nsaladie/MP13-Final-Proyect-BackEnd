@@ -11,18 +11,18 @@ public class Drain {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	private String drainOutput;
-	private String drainType;
+	private String output;
+	private String type;
 
 	public Drain() {
 		super();
 	}
 
-	public Drain(Integer id, String drainOutput, String drainType) {
+	public Drain(Integer id, String output, String type) {
 		super();
 		this.id = id;
-		this.drainOutput = drainOutput;
-		this.drainType = drainType;
+		this.output = output;
+		this.type = type;
 	}
 
 	public Integer getId() {
@@ -33,25 +33,25 @@ public class Drain {
 		this.id = id;
 	}
 
-	public String getDrainOutput() {
-		return drainOutput;
+	public String getOutput() {
+		return output;
 	}
 
-	public void setDrainOutput(String drainOutput) {
-		this.drainOutput = drainOutput;
+	public void setOutput(String output) {
+		this.output = output;
 	}
 
-	public String getDrainType() {
-		return drainType;
+	public String getType() {
+		return type;
 	}
 
-	public void setDrainType(String drainType) {
-		this.drainType = drainType;
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	@Override
 	public String toString() {
-		return "Drain [id=" + id + ", drainOutput=" + drainOutput + ", draintype=" + drainType + "]";
+		return "Drain [id=" + id + ", output=" + output + ", type=" + type + "]";
 	}
 
 }

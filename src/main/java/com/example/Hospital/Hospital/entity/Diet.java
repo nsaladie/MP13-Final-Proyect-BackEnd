@@ -22,25 +22,24 @@ public class Diet {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "textureTypeId")
 	private DietTextureType dietTypeTexture;
-	private Integer dietIndependent;
-	private Integer dietProsthesis;
+	private Integer independent;
+	private Integer prosthesis;
 
 	public Diet() {
 		super();
 	}
 
 	public Diet(Integer id, Date dietDate, String dietTakeData, Set<DietType> dietTypes,
-			DietTextureType dietTypeTexture, Integer dietIndependent, Integer dietProsthesis) {
+			DietTextureType dietTypeTexture, Integer independent, Integer prosthesis) {
 		super();
 		this.id = id;
 		this.dietDate = dietDate;
 		this.dietTakeData = dietTakeData;
 		this.dietTypes = dietTypes;
 		this.dietTypeTexture = dietTypeTexture;
-		this.dietIndependent = dietIndependent;
-		this.dietProsthesis = dietProsthesis;
+		this.independent = independent;
+		this.prosthesis = prosthesis;
 	}
-
 
 	public Integer getId() {
 		return id;
@@ -85,27 +84,27 @@ public class Diet {
 		this.dietTypeTexture = dietTypeTexture;
 	}
 
-	public Integer getDietIndependent() {
-		return dietIndependent;
+	public Integer getIndependent() {
+		return independent;
 	}
 
-	public void setDietIndependent(Integer dietIndependent) {
-		this.dietIndependent = dietIndependent;
+	public void setIndependent(Integer independent) {
+		this.independent = independent;
 	}
 
-	public Integer getDietProsthesis() {
-		return dietProsthesis;
+	public Integer getProsthesis() {
+		return prosthesis;
 	}
 
-	public void setDietProsthesis(Integer dietProsthesis) {
-		this.dietProsthesis = dietProsthesis;
+	public void setProsthesis(Integer prosthesis) {
+		this.prosthesis = prosthesis;
 	}
 
 	@Override
 	public String toString() {
 		return "Diet [id=" + id + ", dietDate=" + dietDate + ", dietTakeData=" + dietTakeData + ", dietTypes="
-				+ dietTypes + ", dietTypeTexture=" + dietTypeTexture + ", dietIndependent=" + dietIndependent
-				+ ", dietProsthesis=" + dietProsthesis + "]";
+				+ dietTypes + ", dietTypeTexture=" + dietTypeTexture + ", independent=" + independent + ", prosthesis="
+				+ prosthesis + "]";
 	}
 
 }
