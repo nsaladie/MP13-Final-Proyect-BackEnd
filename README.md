@@ -65,8 +65,7 @@ The system is built around the following key entities:
 
 ### Register Management
 - `POST /register`: Create a new medical register
-- `GET /register/{id}`: Get complete register data by patient ID
-- `GET /register/mobilization/{id}`: Get mobilization data
+- `GET /register/{id}`: Get complete register data by vitalsign ID
 - `GET /register/vitalSign/{id}`: Get vital sign history
 - `GET /register/diagnosis/{id}`: Get the latest diagnosis
 
