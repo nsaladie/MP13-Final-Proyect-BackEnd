@@ -15,7 +15,6 @@ public class Register {
 	@ManyToOne
 	@JoinColumn(name = "auxiliarId")
 	private Auxiliary auxiliary;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm")
 	private Date date;
 	@ManyToOne
 	@JoinColumn(name = "patientId")
