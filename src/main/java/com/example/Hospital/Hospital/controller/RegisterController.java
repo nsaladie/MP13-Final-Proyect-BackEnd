@@ -131,26 +131,12 @@ public class RegisterController {
 	}
 
 	@GetMapping("/{id}")
-	public @ResponseBody ResponseEntity<Map<String, Object>> getCompleteRegisterDataByVitalSignId(@PathVariable int id) {
+	public @ResponseBody ResponseEntity<Register> getCompleteRegisterDataByVitalSignId(@PathVariable int id) {
+		Optional<Register> registers = registerRepository.findByVitalSignId(id);
 
-        Optional<Register> registers = registerRepository.findByVitalSignId(id);
-
-		if (!registers.isEmpty()) {
+		if (registers.isPresent()) {
 			Register register = registers.get();
-			Map<String, Object> response = new HashMap<>();
-
-			response.put("id", register.getId());
-			response.put("auxiliary", register.getAuxiliary());
-			response.put("patient", register.getPatient());
-			response.put("date", register.getDate().toString());
-			response.put("hygieneType", register.getHygieneType());
-			response.put("observation", register.getObservation());
-			response.put("diet", register.getDiet());
-			response.put("drain", register.getDrain());
-			response.put("mobilization", register.getMobilization());
-			response.put("vitalSign", register.getVitalSign());
-
-			return ResponseEntity.ok(response);
+			return ResponseEntity.ok(register);
 		} else {
 			return ResponseEntity.notFound().build();
 		}
