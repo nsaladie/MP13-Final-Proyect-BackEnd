@@ -15,143 +15,141 @@ import jakarta.transaction.Transactional;
 @RestController
 @RequestMapping("/register")
 public class RegisterController {
-	@Autowired
-	private AuxiliaryRepository auxiliarRepository;
-	@Autowired
-	private PatientRepository patientRepository;
-	@Autowired
-	private DiagnosisRepository diagnosisRepository;
-	@Autowired
-	private VitalSignRepository vitalSignRepository;
-	@Autowired
-	private DrainRepository drainRepository;
-	@Autowired
-	private DietRepository dietRepository;
-	@Autowired
-	private HygieneRepository hygieneRepository;
-	@Autowired
-	private MobilizationRepository mobilizationRepository;
-	@Autowired
-	private DetailDiagnosisRepository detailDiagnosisRepository;
-	@Autowired
-	private DietTypeRepository dietTypeRepository;
-	@Autowired
-	private RegisterRepository registerRepository;
+    @Autowired
+    private AuxiliaryRepository auxiliarRepository;
+    @Autowired
+    private PatientRepository patientRepository;
+    @Autowired
+    private DiagnosisRepository diagnosisRepository;
+    @Autowired
+    private VitalSignRepository vitalSignRepository;
+    @Autowired
+    private DrainRepository drainRepository;
+    @Autowired
+    private DietRepository dietRepository;
+    @Autowired
+    private HygieneRepository hygieneRepository;
+    @Autowired
+    private MobilizationRepository mobilizationRepository;
+    @Autowired
+    private DetailDiagnosisRepository detailDiagnosisRepository;
+    @Autowired
+    private DietTypeRepository dietTypeRepository;
+    @Autowired
+    private RegisterRepository registerRepository;
 
-	public RegisterController() {
-		super();
-	}
+    public RegisterController() {
+        super();
+    }
 
-	@PostMapping("")
-	@Transactional
-	public @ResponseBody ResponseEntity<Boolean> createRegister(@RequestBody Register register) {
-		try {
-			
-			// Add the current Date of the insert data
-			register.setDate(new Date());
+    @PostMapping("")
+    @Transactional
+    public @ResponseBody ResponseEntity<Boolean> createRegister(@RequestBody Register register) {
+        try {
 
-			// Mobilization
-			if (register.getMobilization() != null) {
-				Mobilization mobilization = mobilizationRepository.save(register.getMobilization());
-				register.setMobilization(mobilization);
-			}
-			
-			// Hygiene Type
-			if (register.getHygieneType() != null) {
-				HygieneType hygieneType = hygieneRepository.save(register.getHygieneType());
-				register.setHygieneType(hygieneType);
-			}
-			
-			// Vital Sign
-			if (register.getVitalSign() != null) {
-				VitalSign vitalSign = vitalSignRepository.save(register.getVitalSign());
-				register.setVitalSign(vitalSign);
-			}
-			
-			// Drain
-			if (register.getDrain() != null) {
-				Drain drain = drainRepository.save(register.getDrain());
-				register.setDrain(drain);
-			}
-			
-			// Diet
-			if (register.getDiet() != null) {
-				Diet diet = dietRepository.save(register.getDiet());
+            // Add the current Date of the insert data
+            register.setDate(new Date());
 
-				if (diet.getDietTypes() != null && !diet.getDietTypes().isEmpty()) {
-					for (DietType dietType : diet.getDietTypes()) {
-						if (dietType.getId() == null)
-							dietTypeRepository.save(dietType);
-					}
-				}
-				register.setDiet(diet);
-			}
-			
-			// Diagnosis
-			if (register.getDiagnosis() != null) {
-				Diagnosis diagnosis = diagnosisRepository.save(register.getDiagnosis());
-				// Detail Diagnosis
-				if (register.getDiagnosis().getDetailDiagnosisSet() != null) {
-					for (DetailDiagnosis detail : register.getDiagnosis().getDetailDiagnosisSet()) {
-						detail.setDiagnosis(diagnosis);
-						detailDiagnosisRepository.save(detail);
-					}
-				}
-				register.setDiagnosis(diagnosis);
-			}
+            // Mobilization
+            if (register.getMobilization() != null) {
+                Mobilization mobilization = mobilizationRepository.save(register.getMobilization());
+                register.setMobilization(mobilization);
+            }
 
-			Optional<Auxiliary> auxiliary = auxiliarRepository.findById(register.getAuxiliary().getId());
-			register.setAuxiliary(auxiliary.get());
-			Optional<Patient> patient = patientRepository.findById(register.getPatient().getHistorialNumber());
-			register.setPatient(patient.get());
-			
-			registerRepository.save(register);
-			return ResponseEntity.ok(true);
-		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
-		}
-	}
+            // Hygiene Type
+            if (register.getHygieneType() != null) {
+                HygieneType hygieneType = hygieneRepository.save(register.getHygieneType());
+                register.setHygieneType(hygieneType);
+            }
+
+            // Vital Sign
+            if (register.getVitalSign() != null) {
+                VitalSign vitalSign = vitalSignRepository.save(register.getVitalSign());
+                register.setVitalSign(vitalSign);
+            }
+
+            // Drain
+            if (register.getDrain() != null) {
+                Drain drain = drainRepository.save(register.getDrain());
+                register.setDrain(drain);
+            }
+
+            // Diet
+            if (register.getDiet() != null) {
+                Diet diet = dietRepository.save(register.getDiet());
+
+                if (diet.getDietTypes() != null && !diet.getDietTypes().isEmpty()) {
+                    for (DietType dietType : diet.getDietTypes()) {
+                        if (dietType.getId() == null) dietTypeRepository.save(dietType);
+                    }
+                }
+                register.setDiet(diet);
+            }
+
+            // Diagnosis
+            if (register.getDiagnosis() != null) {
+                Diagnosis diagnosis = diagnosisRepository.save(register.getDiagnosis());
+                // Detail Diagnosis
+                if (register.getDiagnosis().getDetailDiagnosisSet() != null) {
+                    for (DetailDiagnosis detail : register.getDiagnosis().getDetailDiagnosisSet()) {
+                        detail.setDiagnosis(diagnosis);
+                        detailDiagnosisRepository.save(detail);
+                    }
+                }
+                register.setDiagnosis(diagnosis);
+            }
+
+            Optional<Auxiliary> auxiliary = auxiliarRepository.findById(register.getAuxiliary().getId());
+            register.setAuxiliary(auxiliary.get());
+            Optional<Patient> patient = patientRepository.findById(register.getPatient().getHistorialNumber());
+            register.setPatient(patient.get());
+
+            registerRepository.save(register);
+            return ResponseEntity.ok(true);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+        }
+    }
 
     @GetMapping("/vitalSign/{id}")
     public @ResponseBody ResponseEntity<Iterable<VitalSign>> getVitalSignData(@PathVariable int id) {
 
-		List<Register> registers = registerRepository.findByPatientHistorialNumberOrderByDateDesc(id);
+        List<Register> registers = registerRepository.findByPatientHistorialNumberAndVitalSignIsNotNullOrderByDateDesc(id);
 
-		List<VitalSign> vitalSigns = new ArrayList<>();
-		for (Register register : registers) {
-			vitalSigns.add(register.getVitalSign());
-		}
+        List<VitalSign> vitalSigns = new ArrayList<>();
+        for (Register register : registers) {
+            vitalSigns.add(register.getVitalSign());
+        }
 
-		if (!vitalSigns.isEmpty()) {
-			return ResponseEntity.ok(vitalSigns);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
+        if (!vitalSigns.isEmpty()) {
+            return ResponseEntity.ok(vitalSigns);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
 
-	}
+    }
 
-	@GetMapping("/{id}")
-	public @ResponseBody ResponseEntity<Register> getCompleteRegisterDataByVitalSignId(@PathVariable int id) {
-		Optional<Register> registers = registerRepository.findByVitalSignId(id);
+    @GetMapping("/{id}")
+    public @ResponseBody ResponseEntity<Register> getCompleteRegisterDataByVitalSignId(@PathVariable int id) {
+        Optional<Register> registers = registerRepository.findByVitalSignId(id);
 
-		if (registers.isPresent()) {
-			Register register = registers.get();
-			return ResponseEntity.ok(register);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
+        if (registers.isPresent()) {
+            Register register = registers.get();
+            return ResponseEntity.ok(register);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-	@GetMapping("/diagnosis/{id}")
-	public @ResponseBody ResponseEntity<DetailDiagnosis> getLastDiagnosis(@PathVariable int id) {
-		Optional<Register> register = registerRepository
-				.findTopByPatientHistorialNumberAndDiagnosisIsNotNullOrderByDateDesc(id);
+    @GetMapping("/diagnosis/{id}")
+    public @ResponseBody ResponseEntity<DetailDiagnosis> getLastDiagnosis(@PathVariable int id) {
+        Optional<Register> register = registerRepository.findTopByPatientHistorialNumberAndDiagnosisIsNotNullOrderByDateDesc(id);
 
-		if (register.isPresent()) {
-			for (DetailDiagnosis diagnosis : register.get().getDiagnosis().getDetailDiagnosisSet()) {
-				return ResponseEntity.ok(diagnosis);
-			}
-		}
-		return ResponseEntity.badRequest().build();
-	}
+        if (register.isPresent()) {
+            for (DetailDiagnosis diagnosis : register.get().getDiagnosis().getDetailDiagnosisSet()) {
+                return ResponseEntity.ok(diagnosis);
+            }
+        }
+        return ResponseEntity.badRequest().build();
+    }
 }
