@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.example.Hospital.Hospital.entity.DietType;
 
-public interface DietTypeRepository extends CrudRepository<DietType, Integer>{
-
+public interface DietTypeRepository extends CrudRepository<DietType, Integer> {
+	DietType findByDescription(String description);
 }
