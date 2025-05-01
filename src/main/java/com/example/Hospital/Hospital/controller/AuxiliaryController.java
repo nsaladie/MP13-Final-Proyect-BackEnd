@@ -21,15 +21,15 @@ public class AuxiliaryController {
 	}
 
 	@PostMapping("/login")
-	public @ResponseBody ResponseEntity<Boolean> login(@RequestBody Auxiliary auxiliarId) {
+	public @ResponseBody ResponseEntity<Optional<Auxiliary>> login(@RequestBody Auxiliary auxiliarId) {
 		// Search if the auxiliary id is in the database
 		Optional<Auxiliary> auxiliar = auxiliarRepository.findById(auxiliarId.getId());
 
 		// If exist return true
 		if (auxiliar.isPresent()) {
-			return ResponseEntity.ok(true);
+			return ResponseEntity.ok(auxiliar);
 		}
-		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
 
 	}
 

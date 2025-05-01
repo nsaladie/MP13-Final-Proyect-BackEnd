@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.Hospital.Hospital.entity.*;
 import com.example.Hospital.Hospital.repository.*;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
 
@@ -127,9 +128,47 @@ public class RegisterController {
 
 			registerRepository.save(register);
 			return ResponseEntity.ok(true);
-
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
+		}
+	}
+
+	@PostMapping("/diagnosis")
+	public @ResponseBody ResponseEntity<Boolean> createDiagnosis(@RequestBody Map<String, Object> requestMap) {
+
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+
+			Register register = mapper.convertValue(requestMap.get("register"), Register.class);
+			Diagnosis diagnosis = mapper.convertValue(requestMap.get("diagnosis"), Diagnosis.class);
+
+			if (register.getDate() == null) {
+				register.setDate(new Date());
+			}
+
+			
+			Diagnosis savedDiagnosis = diagnosisRepository.save(diagnosis);
+
+			if (diagnosis.getDetailDiagnosisSet() != null) {
+				for (DetailDiagnosis detail : diagnosis.getDetailDiagnosisSet()) {
+					detail.setDiagnosis(savedDiagnosis);
+					detailDiagnosisRepository.save(detail);
+				}
+			}
+			register.setDiagnosis(diagnosis);
+
+			Optional<Auxiliary> auxiliary = auxiliarRepository.findById(register.getAuxiliary().getId());
+			register.setAuxiliary(auxiliary.get());
+			Optional<Patient> patient = patientRepository.findById(register.getPatient().getHistorialNumber());
+			register.setPatient(patient.get());
+			
+		
+			registerRepository.save(register);
+
+			return ResponseEntity.ok(true);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
 		}
 	}
 
@@ -186,4 +225,5 @@ public class RegisterController {
 			return ResponseEntity.badRequest().body(false);
 		}
 	}
+
 }
