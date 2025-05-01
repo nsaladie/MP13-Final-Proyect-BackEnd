@@ -19,7 +19,7 @@ public class Diet {
 	private String takeData;
 	@ManyToMany(mappedBy = "diets")
 	private Set<DietType> dietTypes = new HashSet<>();
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name = "textureTypeId")
 	private DietTextureType dietTypeTexture;
 	private Integer independent;
@@ -106,7 +106,5 @@ public class Diet {
 				+ ", dietTypeTexture=" + dietTypeTexture + ", independent=" + independent + ", prosthesis=" + prosthesis
 				+ "]";
 	}
-
-	
 
 }

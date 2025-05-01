@@ -29,13 +29,15 @@ public class RegisterController {
 	@Autowired
 	private DietRepository dietRepository;
 	@Autowired
+	private DietTypeRepository dietTypeRepository;
+	@Autowired
+	private DietTextureTypeRepository dietTextureTypeRepository;
+	@Autowired
 	private HygieneRepository hygieneRepository;
 	@Autowired
 	private MobilizationRepository mobilizationRepository;
 	@Autowired
 	private DetailDiagnosisRepository detailDiagnosisRepository;
-	@Autowired
-	private DietTypeRepository dietTypeRepository;
 	@Autowired
 	private RegisterRepository registerRepository;
 
@@ -77,15 +79,33 @@ public class RegisterController {
 
 			// Diet
 			if (register.getDiet() != null) {
-				Diet diet = dietRepository.save(register.getDiet());
-
+				Diet diet = register.getDiet();
+				// Diet Type
 				if (diet.getDietTypes() != null && !diet.getDietTypes().isEmpty()) {
+					Set<DietType> updatedDietTypes = new HashSet<>();
+
 					for (DietType dietType : diet.getDietTypes()) {
-						if (dietType.getId() == null)
-							dietTypeRepository.save(dietType);
+						// Search by description the types of Diet
+						DietType existingTypeByDesc = dietTypeRepository.findByDescription(dietType.getDescription());
+
+						if (existingTypeByDesc != null) {
+							// Add to the list the existing types
+							updatedDietTypes.add(existingTypeByDesc);
+						}
 					}
+
+					// Update the list with only the existing types
+					diet.setDietTypes(updatedDietTypes);
 				}
-				register.setDiet(diet);
+				// Diet Texture Type
+				if (diet.getDietTypeTexture() != null && diet.getDietTypeTexture().getDescription() != null) {
+					String description = diet.getDietTypeTexture().getDescription();
+					diet.setDietTypeTexture(null);
+					diet.setDietTypeTexture(dietTextureTypeRepository.findByDescription(description));
+				}
+
+				Diet savedDiet = dietRepository.save(diet);
+				register.setDiet(savedDiet);
 			}
 
 			// Diagnosis
@@ -149,6 +169,8 @@ public class RegisterController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(false);
 		}
 	}
 
@@ -195,4 +217,15 @@ public class RegisterController {
 		}
 		return ResponseEntity.badRequest().build();
 	}
+
+	@PostMapping("/dietType")
+	public @ResponseBody ResponseEntity<Boolean> createDietType(@RequestBody List<DietType> dietType) {
+		try {
+			dietTypeRepository.saveAll(dietType);
+			return ResponseEntity.status(HttpStatus.CREATED).body(true);
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body(false);
+		}
+	}
+
 }
