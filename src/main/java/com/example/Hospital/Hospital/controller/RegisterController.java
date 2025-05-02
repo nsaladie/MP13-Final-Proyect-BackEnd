@@ -80,31 +80,39 @@ public class RegisterController {
 			// Diet
 			if (register.getDiet() != null) {
 				Diet diet = register.getDiet();
+				Diet savedDiet = dietRepository.save(diet);
+
 				// Diet Type
 				if (diet.getDietTypes() != null && !diet.getDietTypes().isEmpty()) {
 					Set<DietType> updatedDietTypes = new HashSet<>();
 
 					for (DietType dietType : diet.getDietTypes()) {
-						// Search by description the types of Diet
-						DietType existingTypeByDesc = dietTypeRepository.findByDescription(dietType.getDescription());
+						Optional<DietType> existingType = dietTypeRepository.findById(dietType.getId());
 
-						if (existingTypeByDesc != null) {
-							// Add to the list the existing types
-							updatedDietTypes.add(existingTypeByDesc);
+						if (existingType.isPresent()) {
+							DietType foundType = existingType.get();
+							updatedDietTypes.add(foundType);
+
+							// Maintain bidirectional relationship
+							foundType.getDiets().add(savedDiet);
+							dietTypeRepository.save(foundType);
 						}
 					}
 
-					// Update the list with only the existing types
-					diet.setDietTypes(updatedDietTypes);
-				}
-				// Diet Texture Type
-				if (diet.getDietTypeTexture() != null && diet.getDietTypeTexture().getDescription() != null) {
-					String description = diet.getDietTypeTexture().getDescription();
-					diet.setDietTypeTexture(null);
-					diet.setDietTypeTexture(dietTextureTypeRepository.findByDescription(description));
+					// Update and save the diet with correct relationships
+					savedDiet.setDietTypes(updatedDietTypes);
+					savedDiet = dietRepository.save(savedDiet);
 				}
 
-				Diet savedDiet = dietRepository.save(diet);
+				// Diet Texture Type by ID
+				if (diet.getDietTypeTexture() != null && diet.getDietTypeTexture().getId() != null) {
+					Optional<DietTextureType> textureType = dietTextureTypeRepository.findById(diet.getDietTypeTexture().getId());
+					if (textureType.isPresent()) {
+						savedDiet.setDietTypeTexture(textureType.get());
+						savedDiet = dietRepository.save(savedDiet);
+					}
+				}
+
 				register.setDiet(savedDiet);
 			}
 
@@ -146,7 +154,6 @@ public class RegisterController {
 				register.setDate(new Date());
 			}
 
-			
 			Diagnosis savedDiagnosis = diagnosisRepository.save(diagnosis);
 
 			if (diagnosis.getDetailDiagnosisSet() != null) {
@@ -161,13 +168,11 @@ public class RegisterController {
 			register.setAuxiliary(auxiliary.get());
 			Optional<Patient> patient = patientRepository.findById(register.getPatient().getHistorialNumber());
 			register.setPatient(patient.get());
-			
-		
+
 			registerRepository.save(register);
 
 			return ResponseEntity.ok(true);
 		} catch (Exception e) {
-			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
 		}
 	}
@@ -188,7 +193,6 @@ public class RegisterController {
 		} else {
 			return ResponseEntity.notFound().build();
 		}
-
 	}
 
 	@GetMapping("/{id}")
@@ -214,16 +218,6 @@ public class RegisterController {
 			}
 		}
 		return ResponseEntity.badRequest().build();
-	}
-
-	@PostMapping("/dietType")
-	public @ResponseBody ResponseEntity<Boolean> createDietType(@RequestBody List<DietType> dietType) {
-		try {
-			dietTypeRepository.saveAll(dietType);
-			return ResponseEntity.status(HttpStatus.CREATED).body(true);
-		} catch (Exception e) {
-			return ResponseEntity.badRequest().body(false);
-		}
 	}
 
 }
