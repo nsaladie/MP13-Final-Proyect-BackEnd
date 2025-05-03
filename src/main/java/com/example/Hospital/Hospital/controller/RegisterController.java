@@ -188,12 +188,8 @@ public class RegisterController {
 			vitalSigns.add(register.getVitalSign());
 		}
 
-		if (!vitalSigns.isEmpty()) {
-			return ResponseEntity.ok(vitalSigns);
-		} else {
-			return ResponseEntity.notFound().build();
-		}
-	}
+        return ResponseEntity.ok(vitalSigns);
+    }
 
 	@GetMapping("/{id}")
 	public @ResponseBody ResponseEntity<Register> getCompleteRegisterDataByVitalSignId(@PathVariable int id) {
