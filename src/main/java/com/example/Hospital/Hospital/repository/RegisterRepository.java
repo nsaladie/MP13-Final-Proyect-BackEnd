@@ -17,5 +17,8 @@ public interface RegisterRepository extends CrudRepository<Register, Integer> {
     
     Optional<Register>findTopByPatientHistorialNumberAndObservationIsNotNullOrderByDateDesc(int patientId);
     
+    List<Register>findByPatientHistorialNumberAndDiagnosisIsNotNullOrderByDateDesc(int patientId);
+
+    
     
 }
