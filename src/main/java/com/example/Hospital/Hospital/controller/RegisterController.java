@@ -106,7 +106,8 @@ public class RegisterController {
 
 				// Diet Texture Type by ID
 				if (diet.getDietTypeTexture() != null && diet.getDietTypeTexture().getId() != null) {
-					Optional<DietTextureType> textureType = dietTextureTypeRepository.findById(diet.getDietTypeTexture().getId());
+					Optional<DietTextureType> textureType = dietTextureTypeRepository
+							.findById(diet.getDietTypeTexture().getId());
 					if (textureType.isPresent()) {
 						savedDiet.setDietTypeTexture(textureType.get());
 						savedDiet = dietRepository.save(savedDiet);
@@ -188,8 +189,8 @@ public class RegisterController {
 			vitalSigns.add(register.getVitalSign());
 		}
 
-        return ResponseEntity.ok(vitalSigns);
-    }
+		return ResponseEntity.ok(vitalSigns);
+	}
 
 	@GetMapping("/{id}")
 	public @ResponseBody ResponseEntity<Register> getCompleteRegisterDataByVitalSignId(@PathVariable int id) {
@@ -213,6 +214,28 @@ public class RegisterController {
 				return ResponseEntity.ok(diagnosis);
 			}
 		}
+		return ResponseEntity.badRequest().build();
+	}
+
+	@GetMapping("/diagnosisList/{id}")
+	public @ResponseBody ResponseEntity<List<DetailDiagnosis>> getListOfDiagnosis(@PathVariable int id) {
+		List<Register> register = registerRepository
+				.findByPatientHistorialNumberAndDiagnosisIsNotNullOrderByDateDesc(id);
+
+		List<DetailDiagnosis> diagnosisList = new ArrayList<>();
+
+		for (Register registerItem : register) {
+			Optional<Register> optionalRegister = Optional.ofNullable(registerItem);
+
+			if (optionalRegister.isPresent() && optionalRegister.get().getDiagnosis() != null) {
+				diagnosisList.addAll(optionalRegister.get().getDiagnosis().getDetailDiagnosisSet());
+			}
+		}
+
+		if (!diagnosisList.isEmpty()) {
+			return ResponseEntity.ok(diagnosisList);
+		}
+
 		return ResponseEntity.badRequest().build();
 	}
 
