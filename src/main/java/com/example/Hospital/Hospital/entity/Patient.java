@@ -1,20 +1,24 @@
 package com.example.Hospital.Hospital.entity;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Patient {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer historialNumber;
-
 	private String name;
 	private String surname;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -25,8 +29,6 @@ public class Patient {
 	private String allergy;
 	private String caragiverName;
 	private String caragiverNumber;
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-	private Date dateEntry;
 
 	public Patient() {
 		super();
@@ -110,14 +112,6 @@ public class Patient {
 
 	public void setCaragiverNumber(String caragiverNumber) {
 		this.caragiverNumber = caragiverNumber;
-	}
-
-	public Date getDateEntry() {
-		return dateEntry;
-	}
-
-	public void setDateEntry(Date dateEntry) {
-		this.dateEntry = dateEntry;
 	}
 
 }
