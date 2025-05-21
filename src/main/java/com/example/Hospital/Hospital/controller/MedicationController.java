@@ -30,6 +30,16 @@ public class MedicationController {
         return ResponseEntity.ok(medicineRepository.findAll());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Medication> getMedicineById(@PathVariable int id) {
+        Optional<Medication> medicine = medicineRepository.findById(id);
+        if (medicine.isPresent()) {
+            return new ResponseEntity<>(medicine.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<Boolean> updateMedicine(@PathVariable int id, @RequestBody Medication medication) {
         Optional<Medication> med = medicineRepository.findById(id);
