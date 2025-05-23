@@ -1,5 +1,6 @@
 package com.example.Hospital.Hospital.controller;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,6 +73,22 @@ public class PatientController {
 			}
 		} else {
 			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@GetMapping("/listAll")
+	public @ResponseBody ResponseEntity<Iterable<Patient>> getAllPatients() {
+		try {
+			Iterable<Patient> patients = patientRepository.findAll();
+
+			if (patients == null || !patients.iterator().hasNext()) {
+				return ResponseEntity.ok(Collections.emptyList());
+			}
+
+			return ResponseEntity.ok(patients);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Collections.emptyList());
 		}
 	}
 }
