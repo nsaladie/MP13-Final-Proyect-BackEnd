@@ -124,16 +124,38 @@ public class RoomController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
 		}
 	}
-
+	
 	@PutMapping("/assign")
-	public ResponseEntity<Boolean> assignPatientsToRooms(@RequestBody List<PatientRoomAssignment> assignments) {
-		try {
-			assignmentRepository.saveAll(assignments);
-			return ResponseEntity.ok(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-		}
+	public ResponseEntity<Boolean> assignPatientsToRooms(@RequestBody RoomDTO roomDTO) {
+	    try {
+	        Room room = roomDTO.getRoom();
+	        Patient patient = roomDTO.getPatient();
+	        
+	        if (patient != null && patient.getHistorialNumber() != null && 
+	            room != null && room.getRoomId() != null) {
+	            
+	            PatientRoomAssignment assignment = new PatientRoomAssignment();
+	            assignment.setActive(true);
+	            assignment.setPatient(patient);
+	            assignment.setRoom(room);
+	            assignment.setAssignmentDate(roomDTO.getAssignmentDate() != null ? 
+	                                        roomDTO.getAssignmentDate() : new Date());
+	            
+	            if (roomDTO.getReleaseDate() != null) {
+	                assignment.setReleaseDate(roomDTO.getReleaseDate());
+	            }
+	            
+				assignmentRepository.save(assignment);
+	            
+	            return ResponseEntity.ok(true);
+	        } else {
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+	    }
 	}
+
 
 }
