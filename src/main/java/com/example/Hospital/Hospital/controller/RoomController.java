@@ -3,7 +3,9 @@ package com.example.Hospital.Hospital.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -63,40 +65,52 @@ public class RoomController {
 	@GetMapping
 	public ResponseEntity<List<RoomDTO>> getAllRoomsWithOccupancyStatus() {
 		try {
+			// 1. Retrieve all rooms
 			List<Room> allRooms = new ArrayList<>();
 			roomRepository.findAll().forEach(allRooms::add);
-			List<RoomDTO> roomDTOs = new ArrayList<>();
 
+			// 2. Retrieve all active assignments (using JOINs to avoid N+1 issues)
+			List<PatientRoomAssignment> activeAssignments = assignmentRepository
+					.findAllActiveAssignmentsWithPatientAndRoom();
+
+			// 3. Map active assignments by roomId
+			Map<String, PatientRoomAssignment> roomAssignmentMap = new HashMap<>();
+			for (PatientRoomAssignment a : activeAssignments) {
+				roomAssignmentMap.put(a.getRoom().getRoomId(), a);
+			}
+
+			// 4. Retrieve latest observations for patients in bulk
+			List<Object[]> latestObservations = registerRepository.findLatestObservationsForPatients();
+			Map<Integer, String> patientObservationMap = new HashMap<>();
+			for (Object[] row : latestObservations) {
+				Integer patientId = (Integer) row[0];
+				String obs = (String) row[1];
+				patientObservationMap.put(patientId, obs);
+			}
+
+			// 5. Create list of DTOs
+			List<RoomDTO> result = new ArrayList<>();
 			for (Room room : allRooms) {
-				RoomDTO dto = new RoomDTO(room);
+				RoomDTO dto = new RoomDTO();
+				dto.setRoom(room);
 
-				List<PatientRoomAssignment> activeAssignments = assignmentRepository.findByRoomAndActiveTrue(room);
-
-				if (!activeAssignments.isEmpty()) {
-					PatientRoomAssignment assignment = activeAssignments.get(0);
+				PatientRoomAssignment assignment = roomAssignmentMap.get(room.getRoomId());
+				if (assignment != null) {
 					Patient patient = assignment.getPatient();
-
-					Optional<Register> lastRegister = registerRepository
-							.findTopByPatientHistorialNumberAndObservationIsNotNullOrderByDateDesc(
-									patient.getHistorialNumber());
-
 					dto.setOccupied(true);
 					dto.setPatient(patient);
 					dto.setAssignmentId(assignment.getId());
 					dto.setAssignmentDate(assignment.getAssignmentDate());
 					dto.setReleaseDate(assignment.getReleaseDate());
-
-					if (lastRegister.isPresent() && lastRegister.get().getObservation() != null) {
-						dto.setLastObservation(lastRegister.get().getObservation());
-					}
+					dto.setLastObservation(patientObservationMap.get(patient.getHistorialNumber()));
 				} else {
 					dto.setOccupied(false);
 				}
 
-				roomDTOs.add(dto);
+				result.add(dto);
 			}
 
-			return ResponseEntity.ok(roomDTOs);
+			return ResponseEntity.ok(result);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
@@ -124,38 +138,36 @@ public class RoomController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(false);
 		}
 	}
-	
+
 	@PutMapping("/assign")
 	public ResponseEntity<Boolean> assignPatientsToRooms(@RequestBody RoomDTO roomDTO) {
-	    try {
-	        Room room = roomDTO.getRoom();
-	        Patient patient = roomDTO.getPatient();
-	        
-	        if (patient != null && patient.getHistorialNumber() != null && 
-	            room != null && room.getRoomId() != null) {
-	            
-	            PatientRoomAssignment assignment = new PatientRoomAssignment();
-	            assignment.setActive(true);
-	            assignment.setPatient(patient);
-	            assignment.setRoom(room);
-	            assignment.setAssignmentDate(roomDTO.getAssignmentDate() != null ? 
-	                                        roomDTO.getAssignmentDate() : new Date());
-	            
-	            if (roomDTO.getReleaseDate() != null) {
-	                assignment.setReleaseDate(roomDTO.getReleaseDate());
-	            }
-	            
-				assignmentRepository.save(assignment);
-	            
-	            return ResponseEntity.ok(true);
-	        } else {
-	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-	        }
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
-	    }
-	}
+		try {
+			Room room = roomDTO.getRoom();
+			Patient patient = roomDTO.getPatient();
 
+			if (patient != null && patient.getHistorialNumber() != null && room != null && room.getRoomId() != null) {
+
+				PatientRoomAssignment assignment = new PatientRoomAssignment();
+				assignment.setActive(true);
+				assignment.setPatient(patient);
+				assignment.setRoom(room);
+				assignment.setAssignmentDate(
+						roomDTO.getAssignmentDate() != null ? roomDTO.getAssignmentDate() : new Date());
+
+				if (roomDTO.getReleaseDate() != null) {
+					assignment.setReleaseDate(roomDTO.getReleaseDate());
+				}
+
+				assignmentRepository.save(assignment);
+
+				return ResponseEntity.ok(true);
+			} else {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(false);
+		}
+	}
 
 }
