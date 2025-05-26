@@ -166,16 +166,8 @@ public class RegisterController {
 	}
 
 	@GetMapping("/vitalSign/{id}")
-	public @ResponseBody ResponseEntity<Iterable<VitalSign>> getVitalSignData(@PathVariable int id) {
-
-		List<Register> registers = registerRepository
-				.findByPatientHistorialNumberAndVitalSignIsNotNullOrderByDateDesc(id);
-
-		List<VitalSign> vitalSigns = new ArrayList<>();
-		for (Register register : registers) {
-			vitalSigns.add(register.getVitalSign());
-		}
-
+	public @ResponseBody ResponseEntity<List<VitalSign>> getVitalSignData(@PathVariable int id) {
+		List<VitalSign> vitalSigns = registerRepository.findVitalSignsByPatientHistorialNumber(id);
 		return ResponseEntity.ok(vitalSigns);
 	}
 
