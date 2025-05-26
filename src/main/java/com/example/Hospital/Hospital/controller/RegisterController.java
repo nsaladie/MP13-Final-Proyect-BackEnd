@@ -117,19 +117,6 @@ public class RegisterController {
 				register.setDiet(savedDiet);
 			}
 
-			// Diagnosis
-			if (register.getDiagnosis() != null) {
-				Diagnosis diagnosis = diagnosisRepository.save(register.getDiagnosis());
-				// Detail Diagnosis
-				if (register.getDiagnosis().getDetailDiagnosisSet() != null) {
-					for (DetailDiagnosis detail : register.getDiagnosis().getDetailDiagnosisSet()) {
-						detail.setDiagnosis(diagnosis);
-						detailDiagnosisRepository.save(detail);
-					}
-				}
-				register.setDiagnosis(diagnosis);
-			}
-
 			Optional<Auxiliary> auxiliary = auxiliarRepository.findById(register.getAuxiliary().getId());
 			register.setAuxiliary(auxiliary.get());
 			Optional<Patient> patient = patientRepository.findById(register.getPatient().getHistorialNumber());
